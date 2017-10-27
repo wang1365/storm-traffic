@@ -40,14 +40,16 @@ storm.zookeeper.servers:
 nimbus.host: "localhost"
 
 # nimbus和supervisor的数据存放路径
-storm.local.dir: "%STROM_HOME%\\local"
+storm.local.dir: "/storm_local"
 
 # supervisor所在机器的所有工作进程可用的端口列表
 supervisor.slots.ports:
     - 6700
     - 6701
 ```
-* 启动storm
+* 启动storm  
+生产环境中，一般zookeeper、nimbus、supervisor会分别部署在不同的主机上，简化起见，我们在同一台机器
+上启动部署这些进程：
     * 启动zookeeper：`zkServer`
     * 启动nimbus：`storm numbus`
     * 启动supervisor：`storm supervisor`
