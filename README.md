@@ -1,4 +1,4 @@
-# storm-traffic
+# Storm-traffic
 > 使用storm接入交通数据，实时计算速度流量等交通模型
 
 ## 环境
@@ -58,7 +58,7 @@ supervisor.slots.ports:
 ## Storm概念说明
 * zookeeper  
 zookeeper本身不属于Storm的范围，它是作为一个分布式协调框架帮助storm管理集群中的节点。在启动nimbus和supervisor后，
-可以发现在zookeeper节点/storm/nimbuses和/storm/supervisor下分别多了对应的子节点，并且这些子节点都是临时节点
+可以发现在zookeeper节点/storm/nimbuses和/storm/supervisor下分别多了对应的子节点，并且这些子节点都是临时节点。
 
 ```
 [zk: localhost:2181(CONNECTED) 14] ls2 /storm/nimbuses
