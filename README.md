@@ -95,3 +95,14 @@ nimbus进程部署在storm集群的主控节点上，负责在集群中分发代
 * supervisor
 supervisor进程部署在storm集群的每一个工作节点，负责监听工作节点上已经分配的任务，管理工作进程，给工作进程
 分配任务
+
+## Kafka安装
+* 下载并解压：[https://kafka.apache.org/downloads]()
+* 环境变量配置，`KAFKA_HOME`以及将`%KAFKA_HOME%\bin\windows`加入到系统`PATH`
+* 根据实际情况修改kafka server的配置文件：`%KAFKA_HOME%\config\server.properties`,
+注意其中的zookeeper的配置如`zookeeper.connect=localhost:2181`要根据实际的情况配置。
+* 启动kafka server：`kafka-server-start.bat %KAFKA_HOME%\config\server.properties`
+* 测试kafka server是否正常工作
+    * 启动一个consumer client：`kafka-console-consumer.bat --zookeeper localhost --topic mytopic`
+    * 启动一个producer client：`kafka-console-producer.bat --broker-list localhost:9092 --topic mytopic`  
+    * 在producer中发送一条消息，然后观察consumer中是否可以收到
