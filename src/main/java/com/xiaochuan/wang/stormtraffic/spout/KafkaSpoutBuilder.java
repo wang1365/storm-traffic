@@ -34,8 +34,8 @@ public class KafkaSpoutBuilder {
 
     public static void main(String[] args) {
         KafkaSpout spout = new KafkaSpoutBuilder()
-                .brokers("")
-                .topic("")
+                .brokers("localhost:9092")
+                .topic("traffic")
                 .create();
     }
 }
