@@ -47,16 +47,16 @@ public class WordCountSpout implements IRichSpout {
 
     @Override
     public void nextTuple() {
-        String strLine;
-        BufferedReader bufferedReader = new BufferedReader(reader);
-        try {
-            while ((strLine = bufferedReader.readLine()) != null) {
-                System.out.println("#################### process line: " + strLine);
-                collector.emit(Arrays.asList(strLine));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String strLine;
+//        BufferedReader bufferedReader = new BufferedReader(reader);
+//        try {
+//            while ((strLine = bufferedReader.readLine()) != null) {
+//                System.out.println("#################### process line: " + strLine);
+//                collector.emit(Arrays.asList(strLine));
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

@@ -17,7 +17,7 @@ public class KafkaSpoutBuilder {
     }
 
     public KafkaSpoutBuilder brokers(Collection<String> v) {
-        _brokers = String.join(",", v);
+//        _brokers = String.join(",", v);
         return this;
     }
 

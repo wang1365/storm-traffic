@@ -106,3 +106,5 @@ supervisor进程部署在storm集群的每一个工作节点，负责监听工�
     * 启动一个consumer client：`kafka-console-consumer.bat --zookeeper localhost --topic mytopic`
     * 启动一个producer client：`kafka-console-producer.bat --broker-list localhost:9092 --topic mytopic`  
     * 在producer中发送一条消息，然后观察consumer中是否可以收到
+	
+### Temp
