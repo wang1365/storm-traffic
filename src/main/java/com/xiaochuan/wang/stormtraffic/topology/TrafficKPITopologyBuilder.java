@@ -28,17 +28,17 @@ public class TrafficKPITopologyBuilder {
         // 添加kafka数据源
         String spoutName = "traffic-kafka";
         builder.setSpout(spoutName, kafkaSpout)
-                .setDebug(true)
+                .setDebug(false)
                 .setNumTasks(1)
                 .setMaxTaskParallelism(1);
 
         // 添加bolt统计车辆数, 并关联到kafka spout
         builder.setBolt(CarCountBolt.class.getSimpleName(), new CarCountBolt(3600))
                 .shuffleGrouping(spoutName)
-                .setDebug(true);
+                .setDebug(false);
 
         // 添加告警bolt
-        List<String> dangerousCars = Arrays.asList("SuA10001", "SuA10003", "SuA10011");
+        List<String> dangerousCars = Arrays.asList("苏A10001", "沪C10003", "浙B10002");
         List<String> mails = Arrays.asList("wangxiaochuan01@163.com");
         builder.setBolt(AlertBolt.class.getSimpleName(), new AlertBolt(dangerousCars, mails))
                 .shuffleGrouping(spoutName);

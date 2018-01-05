@@ -5,6 +5,8 @@ import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.IBasicBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Tuple;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.Map;
  * @Modified By:
  */
 public class AlertBolt implements IBasicBolt {
+    private static final Logger LOG = LoggerFactory.getLogger(AlertBolt.class);
     private final List<String> cars;
     private final List<String> notifyMails;
 
@@ -31,7 +34,11 @@ public class AlertBolt implements IBasicBolt {
 
     @Override
     public void execute(Tuple input, BasicOutputCollector collector) {
-
+        String value = input.getStringByField("value");
+        String car = value.split(",")[1];
+        if (cars.contains(car)) {
+            LOG.info("Found dangerous car: {} !!!!!!!!", car);
+        }
     }
 
     @Override

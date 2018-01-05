@@ -27,13 +27,13 @@ public class TrafficKafkaSpoutBuilder {
     public KafkaSpout build() {
         /** 配置kafka
          * 1. 需要设置consumer group, 注意一个partition中的消息只能被同一group中的一个consumer消费
-         * 2. 起始消费策略：从头开始（根据业务需要配置）
+         * 2. 起始消费策略：根据业务需要配置
          */
         String allBrokers = String.join(",", brokers);
         KafkaSpoutConfig<String, String> conf = KafkaSpoutConfig
                 .builder(allBrokers, topic)
                 .setGroupId("wangxiaochuan-storm")
-                .setFirstPollOffsetStrategy(KafkaSpoutConfig.FirstPollOffsetStrategy.EARLIEST)
+                .setFirstPollOffsetStrategy(KafkaSpoutConfig.FirstPollOffsetStrategy.LATEST)
                 .build();
         return new KafkaSpout(conf);
     }
