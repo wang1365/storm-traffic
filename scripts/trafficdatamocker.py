@@ -40,7 +40,7 @@ while 1:
     key += 1
     value = data.format(dt, gen_car(), gen_speed(), gen_longitude(), gen_latitude())
     print(value)
-    producer.send(topic, value.encode())
+    producer.send(topic, key=str(key), value=value.encode())
     producer.flush()
 
     time.sleep(1)
