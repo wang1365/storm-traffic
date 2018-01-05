@@ -29,6 +29,7 @@ public class TrafficKPITopologyBuilder {
                 .setNumTasks(1)
                 .setMaxTaskParallelism(1);
 
+        // 添加bolt统计车辆数
         builder.setBolt("count", new CarCount())
                 .setDebug(true);
 
