@@ -2,7 +2,6 @@
 import kafka
 import time
 import datetime
-import json
 import random
 
 brokers = ['nbot18.dg.163.org:9092']
@@ -40,7 +39,7 @@ while 1:
     key += 1
     value = data.format(dt, gen_car(), gen_speed(), gen_longitude(), gen_latitude())
     print(value)
-    producer.send(topic, key=str(key), value=value.encode())
+    producer.send(topic, value=value.encode())
     producer.flush()
 
     time.sleep(1)

@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * @author: wangxiaochuan
  * @Description: 按照时间间隔统计汽车数量
- *
  * @Date: Created in 9:45 2018/1/5
  * @Modified By:
  */
@@ -29,7 +28,7 @@ public class CarCountBolt implements IBasicBolt {
 
     public CarCountBolt(long intervalSeconds) {
         this.context = context;
-        this.intervalMs = intervalSeconds*1000;
+        this.intervalMs = intervalSeconds * 1000L;
     }
 
     public void prepare(Map stormConf, TopologyContext context) {
@@ -45,10 +44,12 @@ public class CarCountBolt implements IBasicBolt {
         LOG.info("{}: {} - {}", topic, key, value);
 
         long currentTime = System.currentTimeMillis();
-        if (currentTime - startTime > intervalMs*1000) {
-            count = 1;
+        if (currentTime - startTime > intervalMs) {
+            LOG.info("Total count is {} in current time window", count);
+            count = 0;
             startTime = currentTime;
         }
+        count++;
     }
 
     public void cleanup() {
