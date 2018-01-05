@@ -29,7 +29,7 @@ Storm cluster 使用zookeeper来管理集群，同时由于kafka也使用zookeep
 ## Storm安装
 
 * 下载 storm release并解压  
-安装文件：[http://storm.apache.org/downloads.html]()  
+安装文件：[downloads](http://storm.apache.org/downloads.html)  
 注意：不要下载源码，源码中在storm的根目录下缺少lib文件夹，storm命令无法运行。
 
 * 环境变量设置  
@@ -105,7 +105,7 @@ supervisor进程部署在storm集群的每一个工作节点，负责监听工�
 分配任务
 
 ## Kafka安装
-* 下载并解压：[https://kafka.apache.org/downloads]()
+* 下载并解压：[https://kafka.apache.org/downloads](https://kafka.apache.org/downloads)
 * 环境变量配置，`KAFKA_HOME`以及将`%KAFKA_HOME%\bin\windows`加入到系统`PATH`
 * 根据实际情况修改kafka server的配置文件：`%KAFKA_HOME%\config\server.properties`,
 注意其中的zookeeper的配置如`zookeeper.connect=localhost:2181`要根据实际的情况配置。
