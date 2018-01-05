@@ -1,5 +1,13 @@
 # Storm-traffic
-> 使用storm接入交通数据，实时计算速度流量等交通模型
+使用storm接入交通数据，实时计算速度流量等交通模型
+
+## 功能
+* Kafka数据接入
+* 实时数据清洗和过滤
+* 实时告警
+* 车辆信息统计
+* 工具：交通数据模拟脚本, 参考[Here](./scripts/README.md)
+
 
 ## 环境
 
@@ -11,7 +19,7 @@
 * Python 3.6(官方推荐版本2.6.6，3.x也可以工作)
 
 ## Zookeeper 安装
-> Storm cluster 使用zookeeper来管理集群，同时由于kafka也使用zookeeper来进行分布式协调，
+Storm cluster 使用zookeeper来管理集群，同时由于kafka也使用zookeeper来进行分布式协调，
 简化起见，我们对storm和kafka使用同一套zookeeper，作为开发环境，我们不考虑zookeeper
 的单点故障，所以不搭建zookeeper的集群  
 * 安装方法:
@@ -20,8 +28,8 @@
 
 ## Storm安装
 
-* 下载 storm release并解压
-> 安装文件：[http://storm.apache.org/downloads.html]()  
+* 下载 storm release并解压  
+安装文件：[http://storm.apache.org/downloads.html]()  
 注意：不要下载源码，源码中在storm的根目录下缺少lib文件夹，storm命令无法运行。
 
 * 环境变量设置  
