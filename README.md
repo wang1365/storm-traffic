@@ -23,8 +23,8 @@ Storm cluster 使用zookeeper来管理集群，同时由于kafka也使用zookeep
 简化起见，我们对storm和kafka使用同一套zookeeper，作为开发环境，我们不考虑zookeeper
 的单点故障，所以不搭建zookeeper的集群  
 * 安装方法:
-    * 参考我的另一个repo：[https://github.com/wang1365/zookeeper-gym/README.md]()
-    * 官方文档：[https://zookeeper.apache.org/doc/trunk/zookeeperAdmin.html#sc_singleAndDevSetup]()
+    * 参考我的另一个repo：[zookeeper-gym](https://github.com/wang1365/zookeeper-gym)
+    * 官方文档：[zookeeper](https://zookeeper.apache.org/doc/trunk/zookeeperAdmin.html#sc_singleAndDevSetup)
 
 ## Storm安装
 
