@@ -1,6 +1,6 @@
 package com.xiaochuan.wang.stormtraffic.topology;
 
-import com.xiaochuan.wang.stormtraffic.bolt.CarCount;
+import com.xiaochuan.wang.stormtraffic.bolt.CarCountBolt;
 import com.xiaochuan.wang.stormtraffic.spout.TrafficKafkaSpoutBuilder;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.kafka.spout.KafkaSpout;
@@ -31,7 +31,7 @@ public class TrafficKPITopologyBuilder {
                 .setMaxTaskParallelism(1);
 
         // 添加bolt统计车辆数, 并关联到kafka spout
-        builder.setBolt(CarCount.class.getSimpleName(), new CarCount())
+        builder.setBolt(CarCountBolt.class.getSimpleName(), new CarCountBolt(3600))
                 .shuffleGrouping(spoutName)
                 .setDebug(true);
 
