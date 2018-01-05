@@ -24,7 +24,7 @@ public class Application {
         // 拓扑相关配置
         Map<String, Object> conf = new Config();
         conf.put(Config.TOPOLOGY_WORKERS, 4);
-        conf.put(Config.TOPOLOGY_DEBUG, true);
+        conf.put(Config.TOPOLOGY_DEBUG, false);
 
         if (bLocalMode) {
             // local模式提交，测试用
