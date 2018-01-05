@@ -24,13 +24,15 @@ public class TrafficKPITopologyBuilder {
         TopologyBuilder builder = new TopologyBuilder();
 
         // 添加kafka数据源
-        builder.setSpout("kafka", kafkaSpout)
+        String spoutName = "traffic-kafka";
+        builder.setSpout(spoutName, kafkaSpout)
                 .setDebug(true)
                 .setNumTasks(1)
                 .setMaxTaskParallelism(1);
 
-        // 添加bolt统计车辆数
-        builder.setBolt("count", new CarCount())
+        // 添加bolt统计车辆数, 并关联到kafka spout
+        builder.setBolt(CarCount.class.getSimpleName(), new CarCount())
+                .shuffleGrouping(spoutName)
                 .setDebug(true);
 
         StormTopology topology = builder.createTopology();
