@@ -32,10 +32,12 @@ public class TrafficKPITopologyBuilder {
         builder.setSpout(spoutName, kafkaSpout)
                 .setDebug(false)
                 .setNumTasks(1)
-                .setMaxTaskParallelism(1);
+                .setMaxTaskParallelism(2);
 
         // 添加bolt统计车辆数, 并关联到kafka spout
         builder.setBolt(CarCountBolt.class.getSimpleName(), new CarCountBolt(60))
+                .setNumTasks(2)
+                .setMaxTaskParallelism(2)
                 .shuffleGrouping(spoutName)
                 .setDebug(false);
 

@@ -5,6 +5,8 @@ import org.apache.storm.windowing.TupleWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+
 /**
  * @author: wangxiaochuan
  * @Description: 另外一种计算时间窗口内汽车数量的实现，基于storm自身的窗口功能
@@ -15,6 +17,6 @@ public class TimedCarCountBolt extends BaseWindowedBolt {
     private static final Logger LOG = LoggerFactory.getLogger(TimedCarCountBolt.class);
     @Override
     public void execute(TupleWindow inputWindow) {
-        LOG.info("Count is: {}", inputWindow.get().size());
+        LOG.info("[{}] Count is: {}", LocalDateTime.now(), inputWindow.get().size());
     }
 }
