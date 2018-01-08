@@ -25,6 +25,8 @@ public class Application {
         Map<String, Object> conf = new Config();
         conf.put(Config.TOPOLOGY_WORKERS, 4);
         conf.put(Config.TOPOLOGY_DEBUG, false);
+        // 该超时时间需要大于统计窗口的时间
+        conf.put(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS, 300);
 
         if (bLocalMode) {
             // local模式提交，测试用

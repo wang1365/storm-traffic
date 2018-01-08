@@ -13,6 +13,9 @@ import java.util.Map;
 /**
  * @author: wangxiaochuan
  * @Description: 按照时间间隔统计汽车数量
+ *  该实现仅适用于bolt并发度为1的场景，当并发度大于1时，统计的仅是该job内接受的消息的数量，
+ *  没有进行合并，如果要计算全局数量，可借助于redis等第三方组件实现，或者使用package的另
+ *  外一个类：TimedCarCountBolt
  * @Date: Created in 9:45 2018/1/5
  * @Modified By:
  */
