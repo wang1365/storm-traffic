@@ -27,26 +27,26 @@ public class TrafficKPITopologyBuilder {
 
         TopologyBuilder builder = new TopologyBuilder();
 
-        // 添加kafka数据源
+        /** 添加kafka数据源 */
         String spoutName = "traffic-kafka";
         builder.setSpout(spoutName, kafkaSpout)
                 .setDebug(false)
                 .setNumTasks(1)
                 .setMaxTaskParallelism(2);
 
-        // 添加bolt统计车辆数, 并关联到kafka spout
-        builder.setBolt(CarCountBolt.class.getSimpleName(), new CarCountBolt(60))
-                .setNumTasks(2)
-                .setMaxTaskParallelism(2)
+        /** 添加bolt统计车辆数, 并关联到kafka spout
+         注意该bolt并行度为2，即2个executor，所以单个executor中的bolt统计数量
+         并不是全部的汽车数量 */
+        builder.setBolt(CarCountBolt.class.getSimpleName(), new CarCountBolt(60), 2)
                 .shuffleGrouping(spoutName)
                 .setDebug(false);
 
-        // 添加基于时间窗口的车辆统计bolt
+        /** 添加基于时间窗口的车辆统计bolt */
         builder.setBolt(TimedCarCountBolt.class.getSimpleName(), new TimedCarCountBolt()
-                .withTumblingWindow(BaseWindowedBolt.Duration.seconds(60)))
+                .withTumblingWindow(BaseWindowedBolt.Duration.seconds(60)), 1)
                 .shuffleGrouping(spoutName);
 
-        // 添加告警bolt
+        /** 添加告警bolt */
         List<String> dangerousCars = Arrays.asList("苏A10001", "沪C10003", "浙B10002");
         List<String> mails = Arrays.asList("wangxiaochuan01@163.com");
         builder.setBolt(AlertBolt.class.getSimpleName(), new AlertBolt(dangerousCars, mails))
