@@ -1,9 +1,6 @@
 package com.xiaochuan.wang.stormtraffic.topology;
 
-import com.xiaochuan.wang.stormtraffic.bolt.AlertBolt;
-import com.xiaochuan.wang.stormtraffic.bolt.CarCountBolt;
-import com.xiaochuan.wang.stormtraffic.bolt.PeakAlertBolt;
-import com.xiaochuan.wang.stormtraffic.bolt.TimedCarCountBolt;
+import com.xiaochuan.wang.stormtraffic.bolt.*;
 import com.xiaochuan.wang.stormtraffic.spout.TrafficKafkaSpoutBuilder;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.kafka.spout.KafkaSpout;
@@ -35,30 +32,34 @@ public class TrafficKPITopologyBuilder {
                 .setNumTasks(1)
                 .setMaxTaskParallelism(2);
 
+        String filterBolt = FilterBolt.class.getSimpleName();
+        builder.setBolt(filterBolt, new FilterBolt("苏", "沪", "浙A"))
+                .shuffleGrouping(spoutName);
+
         /** 添加bolt统计车辆数, 并关联到kafka spout
          注意该bolt并行度为2，即2个executor，所以单个executor中的bolt统计数量
          并不是全部的汽车数量 */
         builder.setBolt(CarCountBolt.class.getSimpleName(), new CarCountBolt(60), 2)
-                .shuffleGrouping(spoutName)
+                .shuffleGrouping(filterBolt)
                 .setDebug(false);
 
         /** 添加基于时间窗口的车辆统计bolt */
         builder.setBolt(TimedCarCountBolt.class.getSimpleName(), new TimedCarCountBolt()
                 .withTumblingWindow(BaseWindowedBolt.Duration.seconds(60)), 1)
-                .shuffleGrouping(spoutName);
+                .shuffleGrouping(filterBolt);
 
         /** 添加告警bolt, 检查指定汽车是否被检测到 */
         List<String> dangerousCars = Arrays.asList("苏A10001", "沪C10003", "浙B10002");
         List<String> mails = Arrays.asList("wangxiaochuan01@163.com");
         builder.setBolt(AlertBolt.class.getSimpleName(), new AlertBolt(dangerousCars, mails))
-                .shuffleGrouping(spoutName);
+                .shuffleGrouping(filterBolt);
 
         /** 添加告警bolt, 检查单位时间内汽车数量是否达到阈值
          * 过去30秒内汽车数超过40则告警，每5秒检测一次
          */
         builder.setBolt(PeakAlertBolt.class.getSimpleName(),
                 new PeakAlertBolt(30, 5, 40))
-                .shuffleGrouping(spoutName);
+                .shuffleGrouping(filterBolt);
 
         StormTopology topology = builder.createTopology();
 

@@ -35,7 +35,7 @@ public class AlertBolt implements IBasicBolt {
 
     @Override
     public void execute(Tuple input, BasicOutputCollector collector) {
-        TrafficRecord record = TrafficRecord.of(input.getStringByField("value"));
+        TrafficRecord record = (TrafficRecord)input.getValueByField(TrafficRecord.getFIELD());
         if (cars.contains(record.getCarPlate())) {
             LOG.info("Found dangerous car: {} !!!!!!!!", record.getCarPlate());
         }

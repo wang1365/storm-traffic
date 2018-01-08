@@ -8,18 +8,24 @@ import java.time.format.DateTimeParseException;
 
 /**
  * @author: wangxiaochuan
- * @Description:
+ * @Description: 交通数据记录，为了支持序列化，需要注册到Config中
  * @Date: Created in 16:22 2018/1/8
  * @Modified By:
  */
 public class TrafficRecord {
     private static final Logger LOG = LoggerFactory.getLogger(TrafficRecord.class);
+    private static final String FIELD = "traffic.record";
 
     private LocalDateTime localDateTime;
     private String carPlate;
     private float carSpeed;
     private float longitude;
     private float latitude;
+    private String raw;
+
+    public static String getFIELD() {
+        return FIELD;
+    }
 
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
@@ -61,6 +67,19 @@ public class TrafficRecord {
         this.latitude = latitude;
     }
 
+    public String getRaw() {
+        return raw;
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
+    }
+
+    @Override
+    public String toString() {
+        return this.raw;
+    }
+
     public static TrafficRecord of(String raw) {
         String[] items = raw.split(",");
         if (items.length < 5) {
@@ -74,6 +93,7 @@ public class TrafficRecord {
             record.setCarSpeed(Float.parseFloat(items[2]));
             record.setLongitude(Float.parseFloat(items[3]));
             record.setLatitude(Float.parseFloat(items[4]));
+            record.setRaw(raw);
         } catch (DateTimeParseException e) {
             LOG.error("{} parse time error, {}", raw, e.getMessage());
             record = null;

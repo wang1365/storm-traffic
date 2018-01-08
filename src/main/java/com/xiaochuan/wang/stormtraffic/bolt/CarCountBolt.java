@@ -1,5 +1,6 @@
 package com.xiaochuan.wang.stormtraffic.bolt;
 
+import com.xiaochuan.wang.stormtraffic.traffic.TrafficRecord;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.IBasicBolt;
@@ -41,10 +42,8 @@ public class CarCountBolt implements IBasicBolt {
 
     // 由于使用了IBasicBolt，不需要手动ACK，如果使用IRichBolt，请手动ACK确认消息处理成功
     public void execute(Tuple input, BasicOutputCollector collector) {
-        String topic = input.getStringByField("topic");
-        String key = input.getStringByField("key");
-        String value = input.getStringByField("value");
-        LOG.info("{}: {} - {}", topic, key, value);
+        TrafficRecord record = (TrafficRecord)input.getValueByField(TrafficRecord.getFIELD());
+        LOG.info("{}: {}", count, record.getCarPlate());
 
         long currentTime = System.currentTimeMillis();
         if (currentTime - startTime > intervalMs) {
