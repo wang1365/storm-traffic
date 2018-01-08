@@ -1,5 +1,6 @@
 package com.xiaochuan.wang.stormtraffic.bolt;
 
+import com.xiaochuan.wang.stormtraffic.traffic.TrafficRecord;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.IBasicBolt;
@@ -34,10 +35,9 @@ public class AlertBolt implements IBasicBolt {
 
     @Override
     public void execute(Tuple input, BasicOutputCollector collector) {
-        String value = input.getStringByField("value");
-        String car = value.split(",")[1];
-        if (cars.contains(car)) {
-            LOG.info("Found dangerous car: {} !!!!!!!!", car);
+        TrafficRecord record = TrafficRecord.of(input.getStringByField("value"));
+        if (cars.contains(record.getCarPlate())) {
+            LOG.info("Found dangerous car: {} !!!!!!!!", record.getCarPlate());
         }
     }
 
