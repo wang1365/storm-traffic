@@ -2,6 +2,7 @@ package com.xiaochuan.wang.stormtraffic.topology;
 
 import com.xiaochuan.wang.stormtraffic.bolt.AlertBolt;
 import com.xiaochuan.wang.stormtraffic.bolt.CarCountBolt;
+import com.xiaochuan.wang.stormtraffic.bolt.PeakAlertBolt;
 import com.xiaochuan.wang.stormtraffic.bolt.TimedCarCountBolt;
 import com.xiaochuan.wang.stormtraffic.spout.TrafficKafkaSpoutBuilder;
 import org.apache.storm.generated.StormTopology;
@@ -46,10 +47,17 @@ public class TrafficKPITopologyBuilder {
                 .withTumblingWindow(BaseWindowedBolt.Duration.seconds(60)), 1)
                 .shuffleGrouping(spoutName);
 
-        /** 添加告警bolt */
+        /** 添加告警bolt, 检查指定汽车是否被检测到 */
         List<String> dangerousCars = Arrays.asList("苏A10001", "沪C10003", "浙B10002");
         List<String> mails = Arrays.asList("wangxiaochuan01@163.com");
         builder.setBolt(AlertBolt.class.getSimpleName(), new AlertBolt(dangerousCars, mails))
+                .shuffleGrouping(spoutName);
+
+        /** 添加告警bolt, 检查单位时间内汽车数量是否达到阈值
+         * 过去30秒内汽车数超过40则告警，每5秒检测一次
+         */
+        builder.setBolt(PeakAlertBolt.class.getSimpleName(),
+                new PeakAlertBolt(30, 5, 40))
                 .shuffleGrouping(spoutName);
 
         StormTopology topology = builder.createTopology();

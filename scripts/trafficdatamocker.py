@@ -42,4 +42,5 @@ while 1:
     producer.send(topic, value=value.encode())
     producer.flush()
 
-    time.sleep(1)
+    if 0 != random.randint(0, 3):
+        time.sleep(1)
