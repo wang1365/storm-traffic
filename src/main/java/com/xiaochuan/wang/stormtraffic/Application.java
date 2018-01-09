@@ -1,6 +1,7 @@
 package com.xiaochuan.wang.stormtraffic;
 
 
+import com.xiaochuan.wang.stormtraffic.config.TrafficConfig;
 import com.xiaochuan.wang.stormtraffic.topology.TrafficKPITopologyBuilder;
 import com.xiaochuan.wang.stormtraffic.traffic.TrafficRecord;
 import org.apache.storm.Config;
@@ -12,15 +13,17 @@ import org.apache.storm.generated.InvalidTopologyException;
 import org.apache.storm.generated.StormTopology;
 
 
+import java.net.URL;
 import java.util.Map;
 
 public class Application {
 
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
+        TrafficConfig trafficConfig = TrafficConfig.from("application.yml");
         boolean bLocalMode = true;
 
         // 创建拓扑（spout & bolt）
-        StormTopology topology = TrafficKPITopologyBuilder.create();
+        StormTopology topology = TrafficKPITopologyBuilder.create(trafficConfig);
 
         // 拓扑相关配置
         Config conf = new Config();

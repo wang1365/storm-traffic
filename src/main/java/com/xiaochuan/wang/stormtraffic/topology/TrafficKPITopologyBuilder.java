@@ -1,6 +1,7 @@
 package com.xiaochuan.wang.stormtraffic.topology;
 
 import com.xiaochuan.wang.stormtraffic.bolt.*;
+import com.xiaochuan.wang.stormtraffic.config.TrafficConfig;
 import com.xiaochuan.wang.stormtraffic.spout.TrafficKafkaSpoutBuilder;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.kafka.spout.KafkaSpout;
@@ -17,7 +18,7 @@ import java.util.List;
  * @Modified By:
  */
 public class TrafficKPITopologyBuilder {
-    public static StormTopology create() {
+    public static StormTopology create(TrafficConfig config) {
         KafkaSpout kafkaSpout = new TrafficKafkaSpoutBuilder()
                 .brokers(Arrays.asList("nbot18.dg.163.org:9092"))
                 .topic("traffic")
@@ -49,7 +50,7 @@ public class TrafficKPITopologyBuilder {
                 .shuffleGrouping(filterBolt);
 
         /** 添加告警bolt, 检查指定汽车是否被检测到 */
-        List<String> dangerousCars = Arrays.asList("苏A10001", "沪C10003", "浙B10002");
+        List<String> dangerousCars = config.getAlertCars();
         List<String> mails = Arrays.asList("wangxiaochuan01@163.com");
         builder.setBolt(AlertBolt.class.getSimpleName(), new AlertBolt(dangerousCars, mails))
                 .shuffleGrouping(filterBolt);
