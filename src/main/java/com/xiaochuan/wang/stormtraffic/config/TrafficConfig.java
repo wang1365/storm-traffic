@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class TrafficConfig {
     private List<String> alertCars;
+    private boolean localModeEnabled;
 
     public static TrafficConfig from(String ymlPath) {
         Yaml yaml = new Yaml();
@@ -24,5 +25,13 @@ public class TrafficConfig {
 
     public void setAlertCars(List<String> alertCars) {
         this.alertCars = alertCars;
+    }
+
+    public boolean isLocalModeEnabled() {
+        return localModeEnabled;
+    }
+
+    public void setLocalModeEnabled(boolean localModeEnabled) {
+        this.localModeEnabled = localModeEnabled;
     }
 }

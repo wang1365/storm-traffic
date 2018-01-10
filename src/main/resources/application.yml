@@ -2,3 +2,5 @@ alertCars:
   - 苏A10001
   - 沪C10003
   - 浙B10002
+
+localModeEnabled: false
