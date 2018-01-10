@@ -16,7 +16,7 @@ import org.apache.storm.generated.StormTopology;
 import java.net.URL;
 import java.util.Map;
 
-public class Application {
+public class TrafficApplication {
 
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
         TrafficConfig trafficConfig = TrafficConfig.from("application.yml");
