@@ -17,5 +17,6 @@ public class TrafficConfigBolt extends JdbcLookupBolt {
 
     public TrafficConfigBolt(DbConfig config) {
         super(config.getConnectionProvider(), "select * from alert", config.getJdbcLookupMapper());
+        this.withQueryTimeoutSecs(30);
     }
 }

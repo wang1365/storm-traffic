@@ -2,6 +2,8 @@ package com.xiaochuan.wang.stormtraffic.topology;
 
 import com.xiaochuan.wang.stormtraffic.bolt.*;
 import com.xiaochuan.wang.stormtraffic.config.AppConfig;
+import com.xiaochuan.wang.stormtraffic.config.DbConfig;
+import com.xiaochuan.wang.stormtraffic.config.TrafficConfigBolt;
 import com.xiaochuan.wang.stormtraffic.spout.TrafficKafkaSpoutBuilder;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.kafka.spout.KafkaSpout;
@@ -61,6 +63,10 @@ public class TrafficKPITopologyBuilder {
         builder.setBolt(PeakAlertBolt.class.getSimpleName(),
                 new PeakAlertBolt(30, 5, 40))
                 .shuffleGrouping(filterBolt);
+
+        builder.setBolt(TrafficConfigBolt.class.getSimpleName(),
+                new TrafficConfigBolt(new DbConfig(new AppConfig())))
+        ;
 
         StormTopology topology = builder.createTopology();
 

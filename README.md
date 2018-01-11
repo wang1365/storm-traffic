@@ -119,4 +119,6 @@ supervisor进程部署在storm集群的每一个工作节点，负责监听工�
     * 启动一个producer client：`kafka-console-producer.bat --broker-list localhost:9092 --topic mytopic`  
     * 在producer中发送一条消息，然后观察consumer中是否可以收到
 	
-### Temp
+### Intellij IDEA 调试
+* 请把storm-core和storm-core的provided注释掉，否则会出现ClassNotFound异常; 集群提交时需要保留provided
+* application.yml中把localModeEnabled设置为true，集群提交设置为false
