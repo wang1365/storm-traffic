@@ -1,7 +1,7 @@
 package com.xiaochuan.wang.stormtraffic.topology;
 
 import com.xiaochuan.wang.stormtraffic.bolt.*;
-import com.xiaochuan.wang.stormtraffic.config.TrafficConfig;
+import com.xiaochuan.wang.stormtraffic.config.AppConfig;
 import com.xiaochuan.wang.stormtraffic.spout.TrafficKafkaSpoutBuilder;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.kafka.spout.KafkaSpout;
@@ -18,7 +18,7 @@ import java.util.List;
  * @Modified By:
  */
 public class TrafficKPITopologyBuilder {
-    public static StormTopology create(TrafficConfig config) {
+    public static StormTopology create(AppConfig config) {
         KafkaSpout kafkaSpout = new TrafficKafkaSpoutBuilder()
                 .brokers(Arrays.asList("nbot18.dg.163.org:9092"))
                 .topic("traffic")

@@ -10,13 +10,13 @@ import java.util.List;
  * @Date: Created in 16:17 2018/1/9
  * @Modified By:
  */
-public class TrafficConfig {
+public class AppConfig {
     private List<String> alertCars;
     private boolean localModeEnabled;
 
-    public static TrafficConfig from(String ymlPath) {
+    public static AppConfig from(String ymlPath) {
         Yaml yaml = new Yaml();
-        return yaml.loadAs(TrafficConfig.class.getClassLoader().getResourceAsStream(ymlPath), TrafficConfig.class);
+        return yaml.loadAs(AppConfig.class.getClassLoader().getResourceAsStream(ymlPath), AppConfig.class);
     }
 
     public List<String> getAlertCars() {
