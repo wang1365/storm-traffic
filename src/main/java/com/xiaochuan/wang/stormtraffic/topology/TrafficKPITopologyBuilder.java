@@ -3,7 +3,7 @@ package com.xiaochuan.wang.stormtraffic.topology;
 import com.xiaochuan.wang.stormtraffic.bolt.*;
 import com.xiaochuan.wang.stormtraffic.config.AppConfig;
 import com.xiaochuan.wang.stormtraffic.config.DbConfig;
-import com.xiaochuan.wang.stormtraffic.config.TrafficConfigBolt;
+import com.xiaochuan.wang.stormtraffic.config.TrafficPersistenceBolt;
 import com.xiaochuan.wang.stormtraffic.spout.TrafficKafkaSpoutBuilder;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.kafka.spout.KafkaSpout;
@@ -35,19 +35,24 @@ public class TrafficKPITopologyBuilder {
                 .setNumTasks(1)
                 .setMaxTaskParallelism(2);
 
+
+
         String filterBolt = FilterBolt.class.getSimpleName();
         builder.setBolt(filterBolt, new FilterBolt("苏", "沪", "浙A"))
                 .shuffleGrouping(spoutName);
 
+
         /** 添加bolt统计车辆数, 并关联到kafka spout
          注意该bolt并行度为2，即2个executor，所以单个executor中的bolt统计数量
          并不是全部的汽车数量 */
-        builder.setBolt(CarCountBolt.class.getSimpleName(), new CarCountBolt(60), 2)
+        String countBolt1 = "countBolt1";
+        builder.setBolt(countBolt1, new CarCountBolt(60), 1)
                 .shuffleGrouping(filterBolt)
                 .setDebug(false);
 
         /** 添加基于时间窗口的车辆统计bolt */
-        builder.setBolt(TimedCarCountBolt.class.getSimpleName(), new TimedCarCountBolt()
+        String countBolt2 = "countBolt2";
+        builder.setBolt(countBolt2, new TimedCarCountBolt()
                 .withTumblingWindow(BaseWindowedBolt.Duration.seconds(60)), 1)
                 .shuffleGrouping(filterBolt);
 
@@ -64,9 +69,11 @@ public class TrafficKPITopologyBuilder {
                 new PeakAlertBolt(30, 5, 40))
                 .shuffleGrouping(filterBolt);
 
-        builder.setBolt(TrafficConfigBolt.class.getSimpleName(),
-                new TrafficConfigBolt(new DbConfig(new AppConfig())))
-        ;
+
+        String dbBoltName = "db";
+        builder.setBolt(dbBoltName, new TrafficPersistenceBolt(new DbConfig(new AppConfig())))
+                .setDebug(true)
+        .shuffleGrouping(countBolt1);
 
         StormTopology topology = builder.createTopology();
 

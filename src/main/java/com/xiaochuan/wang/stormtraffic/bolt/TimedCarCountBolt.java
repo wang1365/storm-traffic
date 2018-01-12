@@ -18,5 +18,7 @@ public class TimedCarCountBolt extends BaseWindowedBolt {
     @Override
     public void execute(TupleWindow inputWindow) {
         LOG.info("[{}] Count is: {}", LocalDateTime.now(), inputWindow.get().size());
+
+
     }
 }

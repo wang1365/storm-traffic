@@ -34,23 +34,29 @@ public class FilterBolt implements IBasicBolt {
 
     @Override
     public void execute(Tuple input, BasicOutputCollector collector) {
-        TrafficRecord record = TrafficRecord.of(input.getStringByField("value"));
-        if (record != null && record.getCarPlate() != null) {
-            boolean checkResult = false;
-            for (String pattern : patterns) {
-                if (record.getCarPlate().contains(pattern)) {
-                    checkResult = true;
-                    break;
+        String component = input.getSourceComponent();
+        if (component.equals("traffic-kafka")) {
+            TrafficRecord record = TrafficRecord.of(input.getStringByField("value"));
+            if (record != null && record.getCarPlate() != null) {
+                boolean checkResult = false;
+                for (String pattern : patterns) {
+                    if (record.getCarPlate().contains(pattern)) {
+                        checkResult = true;
+                        break;
+                    }
                 }
-            }
 
-            if (checkResult) {
-                collector.emit(new Values(record));
+                if (checkResult) {
+                    collector.emit(new Values(record));
+                } else {
+                    LOG.info("Ignored car: {}", record.getCarPlate());
+                }
             } else {
-                LOG.info("Ignored car: {}", record.getCarPlate());
+                LOG.info("Invalid record:", record.getRaw());
             }
-        } else {
-            LOG.info("Invalid record:", record.getRaw());
+        } else if (component.equals("db")) {
+            int a = 0;
+            System.out.println("111" + a);
         }
     }
 

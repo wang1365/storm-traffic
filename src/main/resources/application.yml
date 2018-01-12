@@ -3,4 +3,4 @@ alertCars:
   - 沪C10003
   - 浙B10002
 
-localModeEnabled: false
+localModeEnabled: true

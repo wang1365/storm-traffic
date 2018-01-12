@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class TrafficApplication {
 
+
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
         final Logger LOG = LoggerFactory.getLogger(AlertBolt.class);
         AppConfig trafficConfig = AppConfig.from("application.yml");

@@ -5,7 +5,9 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.IBasicBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
+import org.apache.storm.tuple.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +49,7 @@ public class CarCountBolt implements IBasicBolt {
 
         long currentTime = System.currentTimeMillis();
         if (currentTime - startTime > intervalMs) {
+            collector.emit(new Values(currentTime, count));
             LOG.info("Total count is {} in current time window", count);
             count = 0;
             startTime = currentTime;
@@ -59,7 +62,7 @@ public class CarCountBolt implements IBasicBolt {
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-
+        declarer.declare(new Fields("time", "count"));
     }
 
     public Map<String, Object> getComponentConfiguration() {
